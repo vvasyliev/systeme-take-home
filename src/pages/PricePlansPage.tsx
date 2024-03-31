@@ -1,5 +1,6 @@
 import { Anchor, Container, Group, Title } from '@mantine/core';
 import { FC } from 'react';
+import { Link } from 'react-router-dom';
 
 import pricePlans from '~/assets/mocks/price-plans.json';
 import Table, { TableColumn } from '~/components/Table/Table';
@@ -47,10 +48,10 @@ const PricePlansPage: FC = () => {
   return (
     <Container mt="sm" fluid>
       <Group mb="xs">
-        <Anchor href={PRODUCTS_PAGE_ROUTE} underline="never">
+        <Anchor component={Link} to={PRODUCTS_PAGE_ROUTE} underline="never">
           <Title c="dimmed">Products</Title>
         </Anchor>
-        <Anchor href={PAGES_PAGE_ROUTE} underline="never">
+        <Anchor component={Link} to={PAGES_PAGE_ROUTE} underline="never">
           <Title c="dimmed" onClick={() => null}>
             Pages
           </Title>

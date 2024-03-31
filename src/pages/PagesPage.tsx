@@ -1,5 +1,6 @@
 import { Container, Group, Anchor, Title } from '@mantine/core';
 import { FC } from 'react';
+import { Link } from 'react-router-dom';
 
 import pages from '~/assets/mocks/pages.json';
 import Table, { TableColumn } from '~/components/Table/Table';
@@ -19,8 +20,8 @@ export type Page = {
 const data = pages as Page[];
 const columns: TableColumn<Page>[] = [
   {
-    id: 'Title',
-    label: 'title',
+    id: 'title',
+    label: 'Title',
     editable: true,
     renderCell: (row) => row.title,
     sortColumn: (a, b) => a.title.localeCompare(b.title),
@@ -59,11 +60,11 @@ const PagesPage: FC = () => {
   return (
     <Container mt="sm" fluid>
       <Group mb="xs">
-        <Anchor href={PRODUCTS_PAGE_ROUTE} underline="never">
+        <Anchor component={Link} to={PRODUCTS_PAGE_ROUTE} underline="never">
           <Title c="dimmed">Products</Title>
         </Anchor>
         <Title onClick={() => null}>Pages</Title>
-        <Anchor href={PRICE_PLANS_PAGE_ROUTE} underline="never">
+        <Anchor component={Link} to={PRICE_PLANS_PAGE_ROUTE} underline="never">
           <Title c="dimmed">Price Plans</Title>
         </Anchor>
       </Group>

@@ -28,9 +28,6 @@ const TableEditModal = <Row extends TableBaseRow>({
     }, {}),
   });
 
-  const test: Record<string, Key> = currentRow;
-  test;
-
   return (
     <Modal opened={opened} onClose={onClose} title="Table Edit" centered>
       {currentRow && (
