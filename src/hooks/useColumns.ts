@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { TableColumn } from '~/components/Table';
+import { TableColumn } from '~/components/Table/Table';
 
 type ColumnsHook<T> = {
   tableColumns: TableColumn<T>[];
