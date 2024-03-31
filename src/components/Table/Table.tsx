@@ -1,12 +1,12 @@
 // does not contain any data manipulation API, used solely for appearance ()
-import { Card, Grid, Input, Table as MantineTable } from '@mantine/core';
+import { Card, Table as MantineTable } from '@mantine/core';
 import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
-import { IconSearch } from '@tabler/icons-react';
 import { Key, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import TableBody from '~/components/Table/TableBody';
 import TableEditModal from '~/components/Table/TableEditModal';
 import TableHead from '~/components/Table/TableHead';
+import TableNav from '~/components/Table/TableNav';
 
 export type TableOptions = {
   editable: boolean;
@@ -122,16 +122,8 @@ function Table<Row extends TableBaseRow>({ data, columns, options = defaultTable
 
   return (
     <Card withBorder>
-      <Grid>
-        <Grid.Col offset={{ base: 0, sm: 8 }} span={{ base: 12, sm: 4 }}>
-          <Input
-            placeholder="Search"
-            rightSection={<IconSearch size={16} />}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </Grid.Col>
-      </Grid>
-      <MantineTable highlightOnHover>
+      <TableNav onSearch={setSearchQuery} />
+      <MantineTable highlightOnHover verticalSpacing="md">
         <TableHead sort={sort} onSort={handleHeaderCell} editable={editable} columns={columns} />
         <TableBody tableData={tableData} editable={editable} columns={columns} onRowEdit={handleEditModal} />
       </MantineTable>

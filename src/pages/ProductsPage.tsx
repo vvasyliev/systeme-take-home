@@ -1,7 +1,9 @@
-import { Container } from '@mantine/core';
+import { Container, Group, Anchor, Title } from '@mantine/core';
 
 import products from '~/assets/mocks/products.json';
 import Table, { TableColumn } from '~/components/Table/Table';
+import { PAGES_PAGE_ROUTE } from '~/pages/PagesPage';
+import { PRICE_PLANS_PAGE_ROUTE } from '~/pages/PricePlansPage';
 
 export const PRODUCTS_PAGE_ROUTE = '/products';
 
@@ -66,7 +68,18 @@ const columns: TableColumn<Product>[] = [
 
 const ProductsPage = () => {
   return (
-    <Container mt="sm">
+    <Container mt="sm" fluid>
+      <Group mb="xs">
+        <Title>Products</Title>
+        <Anchor href={PAGES_PAGE_ROUTE} underline="never">
+          <Title c="dimmed" onClick={() => null}>
+            Pages
+          </Title>
+        </Anchor>
+        <Anchor href={PRICE_PLANS_PAGE_ROUTE} underline="never">
+          <Title c="dimmed">Price Plans</Title>
+        </Anchor>
+      </Group>
       <Table data={data} columns={columns} />
     </Container>
   );
