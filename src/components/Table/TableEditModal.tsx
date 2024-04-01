@@ -1,6 +1,6 @@
 import { Button, Flex, Modal, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { memo, Key } from 'react';
+import { memo, Key, useEffect, useMemo } from 'react';
 
 import { TableBaseRow, TableColumn } from '~/components/Table/Table';
 
@@ -20,18 +20,25 @@ const TableEditModal = <Row extends TableBaseRow>({
   onClose,
   onSubmit,
 }: TableEditModalProps<Row>) => {
-  const editForm = useForm({
-    initialValues: columns.reduce<Record<string, Key>>((acc, field) => {
-      acc[field.id] = currentRow[field.id];
+  const initialValues = useMemo(() => columns.reduce<Record<string, Key>>((acc, field) => {
+    acc[field.id] = currentRow[field.id];
 
-      return acc;
-    }, {}),
+    return acc;
+  }, {}), [columns, currentRow]);
+
+  const editForm = useForm({
+    initialValues,
   });
+
+  useEffect(() => {
+    editForm.setInitialValues(initialValues);
+    editForm.reset();
+  }, [initialValues]);
 
   return (
     <Modal opened={opened} onClose={onClose} title="Table Edit" centered>
       {currentRow && (
-        <form onSubmit={editForm.onSubmit((values) => onSubmit(values))}>
+        <form onSubmit={editForm.onSubmit(onSubmit)}>
           <Flex direction="column" gap="md">
             {columns.map((field) => (
               <TextInput

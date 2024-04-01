@@ -1,6 +1,6 @@
 // does not contain any data manipulation API, used solely for appearance ()
 import { Card, Table as MantineTable } from '@mantine/core';
-import { useDebouncedValue, useDisclosure } from '@mantine/hooks';
+import { useDebouncedValue } from '@mantine/hooks';
 import { Key, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import TableBody from '~/components/Table/TableBody';
@@ -50,7 +50,10 @@ function Table<Row extends TableBaseRow>({ data, columns, options = defaultTable
 
   const editableColumns = useMemo(() => columns.filter((col) => col.editable), [columns]);
   const [currentEditRow, setCurrentEditRow] = useState<Row | null>(null);
-  const [opened, { open, close }] = useDisclosure(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const toggleEditModal = useCallback(() => {
+    setIsEditOpen((prev) => !prev);
+  }, [])
 
   // unmemoized fn triggers TableHead re-renders
   const handleHeaderCell = useCallback((row: TableColumn<Row>) => {
@@ -89,9 +92,9 @@ function Table<Row extends TableBaseRow>({ data, columns, options = defaultTable
   const handleEditModal = useCallback(
     (row: Row) => {
       setCurrentEditRow(row);
-      open();
+      toggleEditModal();
     },
-    [open],
+    [toggleEditModal],
   );
 
   useEffect(() => {
@@ -104,7 +107,7 @@ function Table<Row extends TableBaseRow>({ data, columns, options = defaultTable
     );
   }, [data, debouncedSearchQuery]);
 
-  const handleRowEdit = (values: Record<string, Key>) => {
+  const handleRowEdit = useCallback((values: Record<string, Key>) => {
     setTableData((prevTableData) => {
       const nextTableData = prevTableData.slice();
 
@@ -117,8 +120,8 @@ function Table<Row extends TableBaseRow>({ data, columns, options = defaultTable
       return nextTableData;
     });
 
-    close();
-  };
+    toggleEditModal();
+  }, [toggleEditModal, currentEditRow]);
 
   return (
     <Card withBorder>
@@ -131,8 +134,8 @@ function Table<Row extends TableBaseRow>({ data, columns, options = defaultTable
         <TableEditModal
           currentRow={currentEditRow}
           columns={editableColumns}
-          opened={opened}
-          onClose={close}
+          opened={isEditOpen}
+          onClose={toggleEditModal}
           onSubmit={handleRowEdit}
         />
       )}
